@@ -5,24 +5,9 @@ from datetime import datetime
 from pydantic import BaseModel
 
 app = FastAPI()
-#Classe d'objet de réponse d'une requête
-class Response(BaseModel):
-    status: status
-    result: bytes
-
-    #Classe configuration de la réponse
-    class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-        schema_extra = {
-            "example": {
-                "status": 200,
-                "result": "ZENvZGUyMjAyMTMyMjE2NDYzMA==",
-            }
-        }
 
 # Génération et envoi de l'ID de traitement
-@app.get("/client/scanner/generateur", response_description="Generate treatment ID", response_model=Response)
+@app.get("/client/scanner/generateur", response_description="Generate treatment ID")
 async def createTreatmentId(user: str, scanner: int):
 
     try :
