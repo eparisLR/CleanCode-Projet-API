@@ -19,7 +19,29 @@ async def createTreatmentId(user: str, scanner: int):
         to_encode = user_decoded + str(scanner) + timestamp
         treatmentId = base64.b64encode(to_encode.encode('ascii'))
     
-        return {"status": status.HTTP_200_OK, "result": treatmentId}
+        return {"status": status.HTTP_200_OK, "result": treatmentId, "date": timestamp}
     
     except: 
-        return {"status": status.HTTP_500_INTERNAL_SERVER_ERROR, "message": "Erreur lors du traitement vérifiez les paramètres trasmis et réessayez."}
+        return {"status": status.HTTP_500_INTERNAL_SERVER_ERROR, "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."}
+
+
+
+# Vé&rification de l'ID de traitement
+@app.get("/client/scanner/validation", response_description="Validate treatment ID")
+async def validateTreatmentId(scanner: str, user: str, date: str, treatmentId: bytes):
+
+    try :
+        # Décodage de l'identifiant utilisateur 
+        user_decoded = base64.b64decode(user).decode('ascii')
+
+        # Concaténation et encodage de notre ID de traitement
+        to_encode = user_decoded + scanner + date
+        newTreatmentId = base64.b64encode(to_encode.encode('ascii'))
+
+        # Vérification que l'id de traitement transmis correspond à celui recréé
+        valid = bool(newTreatmentId == treatmentId)
+    
+        return {"status": status.HTTP_200_OK, "request": treatmentId, "result": valid}
+    
+    except: 
+        return {"status": status.HTTP_500_INTERNAL_SERVER_ERROR, "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."}
