@@ -1,11 +1,12 @@
+
+from fastapi import APIRouter, status
 import base64
 from datetime import datetime
-from fastapi import FastAPI, status
 
-app = FastAPI()
+router = APIRouter ()
 
 # Génération et envoi de l'ID de traitement
-@app.get("/client/scanner/generateur", response_description="Generate treatment ID")
+@router.get("/client/scanner/generateur", response_description="Generate treatment ID")
 async def createTreatmentId(user: str, scanner: int):
 
     try :
@@ -28,10 +29,8 @@ async def createTreatmentId(user: str, scanner: int):
             "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."
         }
 
-
-
 # Vérification de l'ID de traitement
-@app.get("/client/scanner/validation", response_description="Validate treatment ID")
+@router.get("/client/scanner/validation", response_description="Validate treatment ID")
 async def validateTreatmentId(scanner: str, user: str, date: str, treatmentId: bytes):
 
     try :
