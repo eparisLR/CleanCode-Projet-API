@@ -6,22 +6,12 @@ Before trying to install this API, you have to install Docker and Python 3.
 
 ## Installation
 
-First create a virtual env by using this command :  
-```
-python3 -m venv venv
-```
-
-Then ou have to activate the virtual env :
-```
-source venv/bin/activate
-```
-
-After this install all the dependencies in the virtual env :
+To start install all the dependencies :
 ```
 pip install -r requirements.txt
 ```
 
-And to start the API use this command :
+Then run :  
 ```
-uvicorn app:app --reload
+python3 run.py
 ```
