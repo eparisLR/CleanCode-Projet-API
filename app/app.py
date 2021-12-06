@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers.token_router import router as TokenRouter
+from .routers.token_router import router as TokenRouter
 
 app = FastAPI()
 
