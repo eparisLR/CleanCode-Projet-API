@@ -1,6 +1,6 @@
-from fastapi import FastAPI, status
 import base64
 from datetime import datetime
+from fastapi import FastAPI, status
 
 app = FastAPI()
 
@@ -9,7 +9,7 @@ app = FastAPI()
 async def createTreatmentId(user: str, scanner: int):
 
     try :
-        # Décodage de l'identifiant utilisateur 
+        # Décodage de l'identifiant utilisateur
         user_decoded = base64.b64decode(user).decode('ascii')
 
         # Récupération de la date et transformation du format de la date
@@ -18,20 +18,24 @@ async def createTreatmentId(user: str, scanner: int):
         # Concaténation et encodage de notre ID de traitement
         to_encode = user_decoded + str(scanner) + timestamp
         treatmentId = base64.b64encode(to_encode.encode('ascii'))
-    
+
+        # Le renvoi de la date sert à pouvoir testé la validation de l'id de traitement
         return {"status": status.HTTP_200_OK, "result": treatmentId, "date": timestamp}
-    
-    except: 
-        return {"status": status.HTTP_500_INTERNAL_SERVER_ERROR, "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."}
+  
+    except:
+        return {
+            "status": status.HTTP_500_INTERNAL_SERVER_ERROR,
+            "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."
+        }
 
 
 
-# Vé&rification de l'ID de traitement
+# Vérification de l'ID de traitement
 @app.get("/client/scanner/validation", response_description="Validate treatment ID")
 async def validateTreatmentId(scanner: str, user: str, date: str, treatmentId: bytes):
 
     try :
-        # Décodage de l'identifiant utilisateur 
+        # Décodage de l'identifiant utilisateur
         user_decoded = base64.b64decode(user).decode('ascii')
 
         # Concaténation et encodage de notre ID de traitement
@@ -43,5 +47,8 @@ async def validateTreatmentId(scanner: str, user: str, date: str, treatmentId: b
     
         return {"status": status.HTTP_200_OK, "request": treatmentId, "result": valid}
     
-    except: 
-        return {"status": status.HTTP_500_INTERNAL_SERVER_ERROR, "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."}
+    except:
+        return {
+            "status": status.HTTP_500_INTERNAL_SERVER_ERROR,
+            "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."
+        }
