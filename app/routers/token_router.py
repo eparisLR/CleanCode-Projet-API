@@ -1,7 +1,7 @@
 
-from fastapi import APIRouter, status
 import base64
 from datetime import datetime
+from fastapi import APIRouter, status
 
 router = APIRouter ()
 
@@ -22,8 +22,8 @@ async def createTreatmentId(user: str, scanner: int):
 
         # Le renvoi de la date sert à pouvoir testé la validation de l'id de traitement
         return {"status": status.HTTP_200_OK, "result": treatmentId, "date": timestamp}
-  
-    except:
+
+    except ValueError:
         return {
             "status": status.HTTP_500_INTERNAL_SERVER_ERROR,
             "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."
@@ -43,10 +43,10 @@ async def validateTreatmentId(scanner: str, user: str, date: str, treatmentId: b
 
         # Vérification que l'id de traitement transmis correspond à celui recréé
         valid = bool(newTreatmentId == treatmentId)
-    
+
         return {"status": status.HTTP_200_OK, "request": treatmentId, "result": valid}
-    
-    except:
+
+    except ValueError:
         return {
             "status": status.HTTP_500_INTERNAL_SERVER_ERROR,
             "message": "Erreur lors du traitement, vérifiez les paramètres transmis et réessayez."
