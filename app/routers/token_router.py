@@ -9,7 +9,7 @@ router = APIRouter ()
 @router.get("/client/scanner/generateur", response_description="Generate treatment ID")
 async def createTreatmentId(user: str, scanner: int):
 
-    try :
+    try:
         # Décodage de l'identifiant utilisateur
         user_decoded = base64.b64decode(user).decode('ascii')
 
@@ -33,7 +33,7 @@ async def createTreatmentId(user: str, scanner: int):
 @router.get("/client/scanner/validation", response_description="Validate treatment ID")
 async def validateTreatmentId(scanner: str, user: str, date: str, treatmentId: bytes):
 
-    try :
+    try:
         # Décodage de l'identifiant utilisateur
         user_decoded = base64.b64decode(user).decode('ascii')
 
